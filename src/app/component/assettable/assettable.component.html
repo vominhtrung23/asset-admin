@@ -1,0 +1,127 @@
+<mat-toolbar>
+	<span>manage Asset</span>
+	<mat-form-field>
+		<mat-select name="lng" placeholder="Language" (selectionChange)="selectLanguage($event)"
+			[(ngModel)]="this.langID">
+			<mat-option *ngFor="let lang of this.listLang" [value]="lang.id">
+				{{lang.description}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+  	<mat-form-field>
+		<mat-select name="lng" placeholder="Supplier" (selectionChange)="selectSupplier($event)"
+			[(ngModel)]="this.supplierID">
+			<mat-option *ngFor="let lang of this.supplier" [value]="lang.id">
+				{{lang.description}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+  	<mat-form-field>
+		<mat-select name="lng" placeholder="Content Type" (selectionChange)="selectContentType($event)"
+			[(ngModel)]="this.conType">
+			<mat-option *ngFor="let ctype of this.contentType" [value]="ctype.description">
+				{{ctype.description}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+</mat-toolbar>
+<div class="main">
+<app-categorytree
+          [projectName]="this.isLoading ? null : this.projectName"
+					[langID]="this.langID"
+					[token]="this.token"
+          [listLang]="this.listLang"
+          [dgContentApiUrl] ="this.dgContentApiUrl"
+          (isEditMode)="receiveEditMode($event)"
+          (selectedCategory)="receiveCategory($event)"
+          (sendDsCategory)= "receiveDsCategory($event)">loading...</app-categorytree>
+
+
+	<mat-card [ngClass]="{'not-active':this.isEditModeCat}">
+		<mat-card-header>
+
+			<mat-card-title>Asset</mat-card-title>
+			<mat-card-subtitle>
+				<mat-form-field class="filter">
+					<input matInput (keyup)="this.applyFilter($event.target.value)" placeholder="Filter by Content Identifier">
+    </mat-form-field>
+
+
+			</mat-card-subtitle>
+
+			<mat-card-actions>
+        <button mat-stroked-button [disabled]="this.dsCategory == null" (click)="createNewAsset()"><mat-icon>add</mat-icon><span class="labelbtn">Add new asset</span></button>
+        <button mat-stroked-button [disabled]="this.dsCategory == null" (click)="createNewPromotion()"><mat-icon>file_copy</mat-icon><span class="labelbtn">Clone</span></button>
+        <button mat-stroked-button [disabled]="this.dsCategory == null" (click)="createNewPromotion()"><mat-icon>refresh</mat-icon><span class="labelbtn">Refresh</span></button>
+
+			<mat-button-toggle-group #group="matButtonToggleGroup" class="btn-status" value="All" (change)="onToggleFilterStatus(group.value)">
+				<mat-button-toggle value="All">All</mat-button-toggle>
+				<mat-button-toggle value="Published">Published</mat-button-toggle>
+				<mat-button-toggle value="Unpublished">Unpublished</mat-button-toggle>
+			</mat-button-toggle-group>
+			<button mat-flat-button (click) = "userGuide()" color="primary" ><mat-icon>information</mat-icon><span class="labelbtn">User Guide</span></button>
+			</mat-card-actions>
+
+		</mat-card-header>
+		<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+		<mat-card-content [ngClass]="{'not-active':isLoading}">
+      	<table mat-table [dataSource]="dataSource" matSort matSortActive="cmId" matSortDirection="desc">
+
+			<!-- Position Column -->
+			<ng-container matColumnDef="campaign">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Content identifier </th>
+				<td mat-cell *matCellDef="let element"> {{element.campaign}} </td>
+			</ng-container>
+
+			<!-- Name Column -->
+			<ng-container matColumnDef="category">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Category
+        </th>
+				<td mat-cell *matCellDef="let element">{{this.findCategoryName(element)}}</td>
+			</ng-container>
+
+
+			<!-- status Column -->
+			<ng-container matColumnDef="status" >
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Stage
+        </th>
+				<td mat-cell *matCellDef="let element">
+					<mat-icon class="publish" *ngIf=" element.status == 'Published'" matTooltip="Published">cloud_done</mat-icon>
+					<mat-icon class="unpublish" *ngIf=" element.status == 'UnPublished'" matTooltip="UnPublished">cloud_off</mat-icon>
+				</td>
+			</ng-container>
+
+			<!-- Action Column -->
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+				<td mat-cell *matCellDef="let element">
+					<button mat-icon-button (click)="editPromotion(element)">
+        <mat-icon matTooltip="Edit">edit</mat-icon>
+        </button>
+					<button mat-icon-button  (click)="previewCam(element)" >
+          <mat-icon matTooltip="Preview">file_copy</mat-icon>
+        </button>
+					<!-- <button mat-icon-button (click)="copyLink(element)">
+          <mat-icon matTooltip="Pick up dynamic direct-link URL">link</mat-icon>
+					</button> -->
+						<button mat-icon-button *ngIf=" element.status == 'UnPublished'" (click)="publishPromotion(true, element)">
+						<mat-icon matTooltip="Publish">cloud_upload</mat-icon>
+					</button>
+						<button mat-icon-button *ngIf=" element.status == 'Published'" (click)="publishPromotion(false, element)">
+						<mat-icon matTooltip="UnPublish">cloud_download</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'selectedRow': selectedRowIndex == row.cmId}"
+         (click)="selectRow(row)"></tr>
+		</table>
+    <mat-paginator [pageSizeOptions]="[15, 30, 45]" showFirstLastButtons></mat-paginator>
+		</mat-card-content>
+	</mat-card>
+
+</div>

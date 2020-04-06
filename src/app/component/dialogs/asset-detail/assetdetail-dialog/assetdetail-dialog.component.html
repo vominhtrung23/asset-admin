@@ -1,0 +1,207 @@
+<h1 mat-dialog-title *ngIf="data.isCreateNew">
+	Create new Asset
+</h1>
+<h1 mat-dialog-title *ngIf="!data.isCreateNew">
+	asset Properties
+</h1>
+<div mat-dialog-content>
+	<form>
+
+		<mat-form-field>
+			<input matInput placeholder="Content identifier" [(ngModel)]="data.campaign" name="campaign" required [formControl]="nameFormControl"
+			 pattern="[a-zA-Z0-9_ ]*" [errorStateMatcher]="matcher">
+			<mat-error *ngIf="nameFormControl.hasError('required')">
+				Content identifier is required
+			</mat-error>
+			<mat-error *ngIf="nameFormControl.hasError('pattern')">
+				Content identifier is allow only letters, numbers, space and dash
+			</mat-error>
+		</mat-form-field>
+
+		<mat-slide-toggle name="status" [checked]="data.status == 'Published'"
+			(toggleChange)="data.status = (data.status == 'UnPublished' ? 'Published' : 'UnPublished');"
+			(dragChange)="data.status = (data.status == 'UnPublished' ? 'Published' : 'UnPublished');">
+			{{data.status}}
+		</mat-slide-toggle>
+
+		<div>
+			<div class="col2">
+				<mat-form-field>
+					<mat-select name="lng" placeholder="Language" [(value)]="data.lng"
+						(selectionChange)="changeLanguage($event)">
+						<mat-option *ngFor="let lang of data.listLang" [value]="lang.id">
+							{{lang.description}}
+						</mat-option>
+					</mat-select>
+
+				</mat-form-field>
+
+				<mat-form-field class="category-dropdown">
+					<input required matInput readonly placeholder="Categories" name="category" value="{{data.categoryName}}" (click)="this.isOpenCategoryTree = !this.isOpenCategoryTree">
+					<div class="mat-select-arrow"></div>
+
+					<div [ngStyle]="{'display':isOpenCategoryTree? 'block' : 'none' }">
+						<div class="overlay" (click)="this.isOpenCategoryTree = false"></div>
+						<tree-root [ngStyle]="{'display':isOpenCategoryTree? 'block' : 'none' }" #tree
+							[nodes]="data.categoriestree" [focused]="true" [options]="this.options">
+							<ng-template #treeNodeWrapperTemplate let-node let-index="index">
+								<div class="node-wrapper" [style.padding-left]="node.getNodePadding()"
+									[class.hide]="node.data.stageId != 50">
+									<tree-node-expander [node]="node"></tree-node-expander>
+									<div class="node-content-wrapper"
+										[class.node-content-wrapper-active]="node.isActive"
+										[class.node-content-wrapper-focused]="node.isFocused"
+										(click)="selectCategory(node)"> {{ node.data.name }} ({{node.data.id}})
+									</div>
+								</div>
+							</ng-template>
+						</tree-root>
+					</div>
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput placeholder="Supplier" [(ngModel)]="data.supplier" name="Supplier" required >
+					<!--  pattern="[a-zA-Z0-9_ ]*" -->
+
+				</mat-form-field>
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<input matInput placeholder="ContentTitle" [(ngModel)]="data.contenttitle" name="campaign"  >
+				</mat-form-field>
+					<mat-form-field>
+						<input matInput placeholder="Content Description Long" [(ngModel)]="data.contentDdescriptionlong" name="campaign"  >
+				</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="Content Dowbload Title" [(ngModel)]="data.contentdowbloadtitle" name="campaign"  >
+				</mat-form-field>
+			</div>
+
+
+			<div class="col2">
+				<mat-form-field>
+					<!-- <input matInput [owlDateTime]="dt1" placeholder="Start Date/Time" [min]="this.minDate" [(ngModel)]="data.date[0]" name="date"
+					 (ngModelChange)="selectStartDay()"> -->
+					<input matInput [owlDateTime]="dt1" placeholder="Content Asset Date"  name="date"
+					 (ngModelChange)="selectStartDay()">
+					<button matSuffix [owlDateTimeTrigger]="dt1" mat-icon-button>
+						<mat-icon>event</mat-icon>
+					</button>
+
+					<owl-date-time #dt1></owl-date-time>
+
+					<!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
+
+				</mat-form-field>
+				<mat-form-field>
+					<mat-select placeholder="Status Featured Y/N" [(value)]="data.Status_Featured_Y_N">
+						<mat-option value="yes">Yes</mat-option>
+						<mat-option value="no">No</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput #someQuantityInput1 type="number" placeholder="Status Features Sort Order" [(ngModel)]="data.Status_Features_Sort_Order" name="Status_Features_Sort_Order"
+					 value="{{data.Status_Features_Sort_Order}}" />
+					<div class="step-arrow-wrapper">
+						<div (mousedown)="$event.preventDefault()" (click)="stepUp(someQuantityInput1)"
+							class="step-up-arrow"></div>
+						<div (mousedown)="$event.preventDefault()" (click)="stepDown(someQuantityInput1)"
+							class="step-down-arrow"></div>
+					</div>
+				</mat-form-field>
+
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<mat-select name="localpartnertype" placeholder="Local Partner Type"
+						[(value)]="data.localpartnertype" (selectionChange)="changeLocalpartnertype($event)">
+						<mat-option value="All">All</mat-option>
+						<!-- <mat-option *ngFor="let type of data.localpartnertype" [value]="lang.id">
+							{{type.description}}
+						</mat-option> -->
+					</mat-select>
+
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput #someQuantityInput2 type="number" placeholder="Status Sort Order" [(ngModel)]="data.Status_Sort_Order" name="Status_Sort_Order"
+					 value="{{data.Status_Sort_Order}}" />
+					<div class="step-arrow-wrapper">
+						<div (mousedown)="$event.preventDefault()" (click)="stepUp(someQuantityInput2)"
+							class="step-up-arrow"></div>
+						<div (mousedown)="$event.preventDefault()" (click)="stepDown(someQuantityInput2)"
+							class="step-down-arrow"></div>
+					</div>
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput placeholder="CSP Reporting id" [(ngModel)]="data.CSPReportingid" name="campaign" >
+       	</mat-form-field>
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<input matInput placeholder="Local Keywords" [(ngModel)]="data.localkeywwords" name="campaign"  >
+       	</mat-form-field>
+					<mat-form-field>
+						<input matInput placeholder="CSP Unique" [(ngModel)]="data.CSPUnique" name="campaign"  >
+       	</mat-form-field>
+						<div class="uploadForm two-col" [ngClass]="{'error':this.errorZipfile !== null}">
+							<mat-form-field>
+								<input readonly matInput placeholder="Content image Thumbnail" value="{{fileName}}" type='text' (click)="fileInput.click()">
+								<button matSuffix (click)="fileInput.click()" mat-icon-button>
+							<mat-icon>folder</mat-icon>
+						</button>
+								<input hidden #fileInput type="file" (change)="uploadAndProgress($event.target.files)" accept="image/*" />
+
+						</mat-form-field>
+								<!-- <mat-progress-bar *ngIf="percentDone > 0" [ngClass]="{'success':percentDone === 100}"
+									mode="determinate" color="warn" value="{{percentDone}}"></mat-progress-bar>
+								<mat-error style="font-size: 75%;position: absolute; margin-top: -10px;">
+									{{this.errorZipfile}}
+								</mat-error> -->
+						</div>
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<input matInput placeholder="Embeded Thumnail image 1" [(ngModel)]="data.embededthumnailimage1" name="campaign"  >
+       	</mat-form-field>
+					<mat-form-field>
+						<input matInput placeholder="Embeded Thumnail image 2" [(ngModel)]="data.embededthumnailimage2" name="campaign"  >
+       	</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="Embeded Thumnail image 3" [(ngModel)]="data.embededthumnailimage3" name="campaign"  >
+       	</mat-form-field>
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<input matInput placeholder="Embeded Thumnail image 4" [(ngModel)]="data.embededthumnailimage4" name="campaign"  >
+				</mat-form-field>
+					<mat-form-field>
+						<input matInput placeholder="Embeded Thumnail image 5" [(ngModel)]="data.embededthumnailimage5" name="campaign"  >
+				</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="Embeded Thumnail image 6" [(ngModel)]="data.embededthumnailimage6" name="campaign"  >
+				</mat-form-field>
+			</div>
+			<div class="col2">
+				<mat-form-field>
+					<mat-select name="localfiletype" placeholder="Local File Type" [(value)]="data.localfiletype"
+						(selectionChange)="changeLocalpartnertype($event)">
+						<mat-option value="Text">Text</mat-option>
+						<!-- <mat-option *ngFor="let file of data.localfiletype" [value]="file.id">
+							{{file.description}}
+						</mat-option> -->
+					</mat-select>
+
+				</mat-form-field>
+			</div>
+
+
+		</div>
+	</form>
+
+</div>
+<div mat-dialog-actions>
+
+	<button mat-button class="btnflowcolor" *ngIf="data.isCreateNew" [disabled]="this.checkRequiredField()" [mat-dialog-close]="data">Create</button>
+	<button mat-button class="btnflowcolor" *ngIf="!data.isCreateNew" [disabled]="this.checkRequiredField()" [mat-dialog-close]="data">Update</button>
+	<button mat-button class="btnflowcolor" *ngIf="!data.isCreateNew" (click)="openPreviewDialog()">Preview</button>
+	<button mat-button class="btnflow" (click)="close()">Cancel</button>
+</div>
