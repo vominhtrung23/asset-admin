@@ -1,4 +1,10 @@
-import { Component, Inject, ViewChild, SecurityContext } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  SecurityContext
+} from "@angular/core";
 import { environment } from "../../../../../environments/environment";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import {
@@ -66,10 +72,23 @@ export class AssetdetailDialogComponent implements OnInit {
   imgFiles: Array<Object> = [];
   isJustUploaded: boolean = false;
   @ViewChild("tree") tree: TreeComponent;
-  nameFormControl = new FormControl("", [Validators.required]);
-  descFormControl = new FormControl("", [Validators.required]);
-  buyUrlFormControl = new FormControl("", [Validators.required]);
-  cspIdFormControl = new FormControl("", [Validators.required]);
+  ContentIdentifierFormControl = new FormControl("", [Validators.required]);
+  SupplierFormControl = new FormControl("", [Validators.required]);
+  ContentTitleFormControl = new FormControl("", [Validators.required]);
+  contentDdescriptionlongFormControl = new FormControl("", [
+    Validators.required
+  ]);
+  contentDowbloadTitleFormControl = new FormControl("", [Validators.required]);
+  CSPReportingidFormControl = new FormControl("", [Validators.required]);
+  localKeywWordsFormControl = new FormControl("", [Validators.required]);
+  CSPUniqueFormControl = new FormControl("", [Validators.required]);
+  CSPUniqueFembededthumnailimage3FormControlormControl = new FormControl("", [Validators.required]);
+  embededthumnailimage1FormControl = new FormControl("", [Validators.required]);
+  embededthumnailimage2FormControl = new FormControl("", [Validators.required]);
+  embededthumnailimage3FormControl = new FormControl("", [Validators.required]);
+  embededthumnailimage4FormControl = new FormControl("", [Validators.required]);
+  embededthumnailimage5FormControl = new FormControl("", [Validators.required]);
+   embededthumnailimage6FormControl = new FormControl("", [Validators.required]);
 
   matcher = new MyErrorStateMatcher();
   constructor(
@@ -237,22 +256,28 @@ export class AssetdetailDialogComponent implements OnInit {
     this.activeNode.toggleActivated();
     this.activeNode.setActiveAndVisible(true);
     // this.activeNode.scrollIntoView(true);
-  console.log(" this.data", this.data);
+    console.log(" this.data", this.data);
     this.isOpenCategoryTree = !this.isOpenCategoryTree;
   }
   checkRequiredField() {
     if (this.data.isCreateNew)
       return (
-        this.nameFormControl.hasError("required")
-
-        
-       
-        
+        this.nameFormControl.hasError("required"),
+        this.SupplierFormControl.hasError("required"),
+        this.ContentTitleFormControl.hasError("required"),
+        this.contentDdescriptionlongFormControl.hasError("required"),
+        this.contentDowbloadTitleFormControl.hasError("required"),
+        this.CSPReportingidFormControl.hasError("required"),
+        this.CSPUniqueFormControl.hasError("required"),
+        this.localKeywWordsFormControl.hasError("required"),
+        this.embededthumnailimage1FormControl.hasError("required"),
+         this.embededthumnailimage2FormControl.hasError("required"),
+          this.embededthumnailimage3FormControl.hasError("required"),
+           this.embededthumnailimage4FormControl.hasError("required"),
+            this.embededthumnailimage5FormControl.hasError("required"),
+             this.embededthumnailimage6FormControl.hasError("required")
       );
-    else
-      return (
-        this.nameFormControl.hasError("required")
-      )
+    else return this.nameFormControl.hasError("required");
   }
 }
 export interface DialogData {

@@ -8,9 +8,9 @@
 	<form>
 
 		<mat-form-field>
-			<input matInput placeholder="Content identifier" [(ngModel)]="data.campaign" name="campaign" required [formControl]="nameFormControl"
-			 pattern="[a-zA-Z0-9_ ]*" [errorStateMatcher]="matcher">
-			<mat-error *ngIf="nameFormControl.hasError('required')">
+			<input matInput placeholder="Content identifier" [(ngModel)]="data.campaign" name="ContentIdentifier" required [formControl]="ContentIdentifierFormControl"
+			  [errorStateMatcher]="matcher">
+			<mat-error *ngIf="ContentIdentifierFormControl.hasError('required')">
 				Content identifier is required
 			</mat-error>
 			<mat-error *ngIf="nameFormControl.hasError('pattern')">
@@ -59,20 +59,31 @@
 					</div>
 				</mat-form-field>
 				<mat-form-field>
-					<input matInput placeholder="Supplier" [(ngModel)]="data.supplier" name="Supplier" required >
+					<input matInput placeholder="Supplier" [(ngModel)]="data.supplier" name="Supplier" [formControl]="SupplierFormControl">
 					<!--  pattern="[a-zA-Z0-9_ ]*" -->
-
+					<mat-error *ngIf="SupplierFormControl.hasError('required')">
+						Supplier is required
+					</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="col2">
 				<mat-form-field>
-					<input matInput placeholder="ContentTitle" [(ngModel)]="data.contenttitle" name="campaign"  >
+					<input matInput placeholder="ContentTitle" [(ngModel)]="data.contenttitle" name="ContentTitle"  [formControl]="ContentTitleFormControl" >
+          	<mat-error *ngIf="ContentTitleFormControl.hasError('required')">
+						Content Titlle is required
+					</mat-error>
 				</mat-form-field>
 					<mat-form-field>
-						<input matInput placeholder="Content Description Long" [(ngModel)]="data.contentDdescriptionlong" name="campaign"  >
-				</mat-form-field>
+						<input matInput placeholder="Content Description Long" [(ngModel)]="data.contentDdescriptionlong" name="contentDdescriptionlong"  [formControl]="contentDdescriptionlongFormControl" >
+            	<mat-error *ngIf="ContentTitleFormControl.hasError('required')">
+						Content Description Long is required
+					</mat-error>
+        </mat-form-field>
 						<mat-form-field>
-							<input matInput placeholder="Content Dowbload Title" [(ngModel)]="data.contentdowbloadtitle" name="campaign"  >
+							<input matInput placeholder="Content Dowbload Title" [(ngModel)]="data.contentdowbloadtitle" name="campaign" [formControl]="contentDowbloadTitleFormControl" >
+              <mat-error *ngIf="contentDowbloadTitleFormControl.hasError('required')">
+						Content Dowbload Title is required
+					</mat-error>
 				</mat-form-field>
 			</div>
 
@@ -132,15 +143,26 @@
 					</div>
 				</mat-form-field>
 				<mat-form-field>
-					<input matInput placeholder="CSP Reporting id" [(ngModel)]="data.CSPReportingid" name="campaign" >
+					<input matInput placeholder="CSP Reporting id" [(ngModel)]="data.CSPReportingid" name="CSPReportingid" [formControl]="CSPReportingidFormControl">
+            <mat-error *ngIf="CSPReportingidFormControl.hasError('required')">
+						CSP Reporting id  is required
+					</mat-error>
        	</mat-form-field>
+        
+            
 			</div>
 			<div class="col2">
 				<mat-form-field>
-					<input matInput placeholder="Local Keywords" [(ngModel)]="data.localkeywwords" name="campaign"  >
+					<input matInput placeholder="Local Keywords" [(ngModel)]="data.localkeywwords" name="localkeywwords" [formControl]="localKeywWordsFormControl"  >
+           <mat-error *ngIf="localKeywWordsFormControl.hasError('required')">
+						local Keyw Words  is required
+					</mat-error>
        	</mat-form-field>
 					<mat-form-field>
-						<input matInput placeholder="CSP Unique" [(ngModel)]="data.CSPUnique" name="campaign"  >
+						<input matInput placeholder="CSP Unique" [(ngModel)]="data.CSPUnique" name="CSPUnique"  [formControl]="CSPUniqueFormControl">
+             <mat-error *ngIf="CSPUniqueFormControl.hasError('required')">
+						CSP Unique  is required
+					</mat-error>
        	</mat-form-field>
 						<div class="uploadForm two-col" [ngClass]="{'error':this.errorZipfile !== null}">
 							<mat-form-field>
@@ -160,24 +182,42 @@
 			</div>
 			<div class="col2">
 				<mat-form-field>
-					<input matInput placeholder="Embeded Thumnail image 1" [(ngModel)]="data.embededthumnailimage1" name="campaign"  >
+					<input matInput placeholder="Embeded Thumnail image 1" [(ngModel)]="data.embededthumnailimage1" name="embededthumnailimage1"  [formControl]="embededthumnailimage1FormControl">
+           <mat-error *ngIf="embededthumnailimage1FormControl.hasError('required')">
+						Embeded Thumnail image 1  is required
+					</mat-error>
        	</mat-form-field>
 					<mat-form-field>
-						<input matInput placeholder="Embeded Thumnail image 2" [(ngModel)]="data.embededthumnailimage2" name="campaign"  >
-       	</mat-form-field>
+						<input matInput placeholder="Embeded Thumnail image 2" [(ngModel)]="data.embededthumnailimage2" name="embededthumnailimage2"  [formControl]="embededthumnailimage2FormControl">
+       	     <mat-error *ngIf="embededthumnailimage2FormControl.hasError('required')">
+						Embeded Thumnail image 2  is required
+					</mat-error>
+          </mat-form-field>
 						<mat-form-field>
-							<input matInput placeholder="Embeded Thumnail image 3" [(ngModel)]="data.embededthumnailimage3" name="campaign"  >
+							<input matInput placeholder="Embeded Thumnail image 3" [(ngModel)]="data.embededthumnailimage3" name="embededthumnailimage3"  [formControl]="embededthumnailimage3FormControl">
+               <mat-error *ngIf="embededthumnailimage3FormControl.hasError('required')">
+						Embeded Thumnail image 3  is required
+					</mat-error>
        	</mat-form-field>
 			</div>
 			<div class="col2">
 				<mat-form-field>
-					<input matInput placeholder="Embeded Thumnail image 4" [(ngModel)]="data.embededthumnailimage4" name="campaign"  >
+					<input matInput placeholder="Embeded Thumnail image 4" [(ngModel)]="data.embededthumnailimage4" name="embededthumnailimage4"  [formControl]="embededthumnailimage3FormControl">
+           <mat-error *ngIf="embededthumnailimage3FormControl.hasError('required')">
+						Embeded Thumnail image 4  is required
+					</mat-error>
 				</mat-form-field>
 					<mat-form-field>
-						<input matInput placeholder="Embeded Thumnail image 5" [(ngModel)]="data.embededthumnailimage5" name="campaign"  >
+						<input matInput placeholder="Embeded Thumnail image 5" [(ngModel)]="data.embededthumnailimage5" name="embededthumnailimage5"  [formControl]="embededthumnailimage5FormControl">
+             <mat-error *ngIf="embededthumnailimage5FormControl.hasError('required')">
+						Embeded Thumnail image 5  is required
+					</mat-error>
 				</mat-form-field>
 						<mat-form-field>
-							<input matInput placeholder="Embeded Thumnail image 6" [(ngModel)]="data.embededthumnailimage6" name="campaign"  >
+							<input matInput placeholder="Embeded Thumnail image 6" [(ngModel)]="data.embededthumnailimage6" name="embededthumnailimage6"  [formControl]="embededthumnailimage6FormControl">
+               <mat-error *ngIf="embededthumnailimage6FormControl.hasError('required')">
+						Embeded Thumnail image 6  is required
+					</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="col2">
